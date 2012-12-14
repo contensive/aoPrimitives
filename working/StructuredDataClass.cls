@@ -40,7 +40,7 @@ Option Explicit
 '       and parse the resulting output.
 '=================================================================================
 '
-Public Function execute(CsvObject As Object, MainObject As Object, optionString As String, filterInput As String) As String
+Public Function execute(CsvObject As Object, mainObject As Object, optionString As String, filterInput As String) As String
     On Error GoTo ErrorTrap
     '
     Dim dst As Long
@@ -55,7 +55,7 @@ Public Function execute(CsvObject As Object, MainObject As Object, optionString 
     Dim main As Object
     Dim src As String
     Dim AddonIDNameOrGuid As String
-    Dim addonId As Long
+    Dim addonid As Long
     Dim InnerOptionString As String
     Dim doc As DOMDocument60
     Dim node As IXMLDOMElement
@@ -66,9 +66,9 @@ Public Function execute(CsvObject As Object, MainObject As Object, optionString 
     Set htmlTools = New htmlToolsClass
     '
     Set csv = CsvObject
-    Set main = MainObject
+    Set main = mainObject
     '
-    src = main.getaddonoption("data", optionString)
+    src = main.GetAddonOption("data", optionString)
     BuildVersion = main.SiteProperty_BuildVersion
     If src <> "" Then
         '
@@ -158,10 +158,10 @@ Public Function execute(CsvObject As Object, MainObject As Object, optionString 
             Loop While Ptr > 0
             '
             execute = execute _
-                & CR & "<div>" _
-                & CR & "<div><b>Processing instructions</b></div>" _
+                & cr & "<div>" _
+                & cr & "<div><b>Processing instructions</b></div>" _
                 & "<pre>" & kmaEncodeHTML(d) & "</pre>" _
-                & CR & "</div>"
+                & cr & "</div>"
         End If
     End If
     '
@@ -183,7 +183,8 @@ End Function
 '       if this is an item node, the parentItemNodeCnt is incremented
 '=================================================================================
 '
-Private Function processNode(main As Object, csv As Object, node As IXMLDOMElement, layout As String, ByRef parentItemNodeCnt As Long, ByRef parentItemNodeLayout As String, BuildVersion As String, htmlTools As htmlToolsClass) As String
+Private Function processNode(main As Object, csv As Object, node As IXMLDOMElement, layout As String, ByRef parentItemNodeCnt As Long, ByRef parentItemNodeLayout As String, BuildVersion As String, htmlTools As Object) As String
+'Private Function processNode(main As Object, csv As Object, node As IXMLDOMElement, layout As String, ByRef parentItemNodeCnt As Long, ByRef parentItemNodeLayout As String, BuildVersion As String, htmlTools As htmlToolsClass) As String
     On Error GoTo ErrorTrap
     '
     Dim LayoutID As Long
@@ -252,7 +253,7 @@ Private Function processNode(main As Object, csv As Object, node As IXMLDOMEleme
                 ' Add exclusive styles
                 '
                 If StylesFilename <> "" Then
-                    Call main.AddStylesheetLink2(main.ServerProtocol & main.ServerHost & main.ServerFilePath & StylesFilename, "layout")
+                    Call main.AddStylesheetLink2(main.ServerProtocol & main.ServerHost & main.serverFilePath & StylesFilename, "layout")
                 End If
                 '
                 ' Add shared styles
@@ -352,9 +353,9 @@ Private Function processNode(main As Object, csv As Object, node As IXMLDOMEleme
             '
             If itemForGroupsList <> "" Then
                 parentItemNodeLayoutModified = "" _
-                    & CR & "<ac type=""aggregatefunction"" name=""Block Text"" querystring=""AllowGroups=" & csv.EncodeAddonOptionArgument(itemForGroupsList) & """ >" _
+                    & cr & "<ac type=""aggregatefunction"" name=""Block Text"" querystring=""AllowGroups=" & csv.EncodeAddonOptionArgument(itemForGroupsList) & """ >" _
                     & kmaIndent(parentItemNodeLayoutModified) _
-                    & CR & "<ac type=""aggregatefunction"" name=""Block Text End"" >"
+                    & cr & "<ac type=""aggregatefunction"" name=""Block Text End"" >"
             End If
             '
             ' return the node or append the node, depending on if it is the first

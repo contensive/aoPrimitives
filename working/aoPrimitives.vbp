@@ -1,10 +1,9 @@
 Type=OleDll
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\system32\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#..\..\..\..\..\..\Windows\SysWOW64\stdole2.tlb#OLE Automation
 Reference=*\G{9EB70BDE-275A-4E9C-ACA4-ED1D89175858}#2.1#0#..\..\..\..\..\..\Program Files\Common Files\kma Shared\kmafndx4.dll#FastIndex4
 Reference=*\G{F5078F18-C551-11D3-89B9-0000F81FE221}#6.0#0#..\..\..\..\..\..\Windows\System32\msxml6.dll#Microsoft XML, v6.0
 Reference=*\G{85394B7E-FA86-43B6-AE14-78ACDE824CC1}#1.0#0#..\..\..\..\..\..\Program Files\Common Files\kma Shared\kmafile2.dll#kmaFileSystem
-Reference=*\G{420B2830-E718-11CF-893D-00A0C9054228}#1.0#0#..\..\..\..\..\..\Windows\system32\scrrun.dll#Microsoft Scripting Runtime
-Reference=*\G{24B6F269-E375-40E7-A7C8-DBFF559B5192}#3a.1a#0#..\..\..\..\..\..\Program Files\kma\Contensive\ccCSrvr3.dll#Contensive Content Server 3
+Reference=*\G{420B2830-E718-11CF-893D-00A0C9054228}#1.0#0#..\..\..\..\..\..\Windows\SysWOW64\scrrun.dll#Microsoft Scripting Runtime
 Class=SiteStructureClass; SiteStructureClass.cls
 Class=StructuredDataClass; StructuredDataClass.cls
 Class=PreviewClass; PreviewClass.cls
