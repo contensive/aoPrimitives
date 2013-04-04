@@ -26,8 +26,10 @@ Namespace Contensive.Addons
             Dim decStatement As XmlDeclaration = retDoc.CreateXmlDeclaration("1.0", Nothing, Nothing)
             Dim docRoot As XmlElement = retDoc.CreateElement("namevalues")
             Dim nodeImage As XmlElement = retDoc.CreateElement("newImage")
-            Dim nodeWidth As XmlElement = retDoc.CreateElement("imageHeight")
-            Dim nodeHeight As XmlElement = retDoc.CreateElement("imageWidth")
+            Dim nodeWidth As XmlElement = retDoc.CreateElement("imageWidth")
+            Dim nodeHeight As XmlElement = retDoc.CreateElement("imageHeight")
+            'Dim nodeWidth As XmlElement = retDoc.CreateElement("imageHeight")
+            'Dim nodeHeight As XmlElement = retDoc.CreateElement("imageWidth")
             '
             CP.site.testPoint("resize, 200")
             '
