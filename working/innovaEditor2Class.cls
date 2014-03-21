@@ -26,7 +26,7 @@ Private csv As Object
 '
 '=================================================================================
 '
-Public Function execute(CsvObject As Object, MainObject As Object, optionString As String, filterInput As String) As String
+Public Function execute(CsvObject As Object, mainObject As Object, optionString As String, filterInput As String) As String
     On Error GoTo ErrorTrap
     '
     Dim s As String
@@ -41,7 +41,7 @@ Public Function execute(CsvObject As Object, MainObject As Object, optionString 
     Dim editorStyles As String
     Dim editorStyleOptions As String
     '
-    Set main = MainObject
+    Set main = mainObject
     Set csv = CsvObject
     '
     editorName = main.GetAddonOption("editorname", optionString)
@@ -87,7 +87,7 @@ Friend Function getInnovaEditorAddon(main As Object, fieldname As String, styleL
     Dim BS() As String
     Dim BPtr As Long
     Dim BCnt As Long
-    Dim cmd As String
+    Dim Cmd As String
     Dim BodyCmd As String
     'Dim LCaseStyleName As String
     Dim StyleCaption As String
@@ -108,8 +108,8 @@ Friend Function getInnovaEditorAddon(main As Object, fieldname As String, styleL
     Dim CutPosition As Long
     Dim iDefaultValue As String
     Dim EditorObjectName As String
-    Dim iWidth As String
-    Dim iHeight As String
+    Dim widthTextNoPx As String
+    Dim heightTextNoPx As String
     Dim SourceMenu As String
     Dim EditorStyleRules As String
     Dim styleSource As String
@@ -145,26 +145,28 @@ Friend Function getInnovaEditorAddon(main As Object, fieldname As String, styleL
     iDefaultValue = Replace(iDefaultValue, "<", "&lt;")
     iDefaultValue = Replace(iDefaultValue, ">", "&gt;")
     If Width <> "" Then
-        iWidth = Width
+        widthTextNoPx = Width
     Else
-        iWidth = main.SiteProperty_DefaultFormInputWidth
+        widthTextNoPx = main.SiteProperty_DefaultFormInputWidth
     End If
-    'iWidth = KmaEncodeMissingText(Width, Main.SiteProperty_DefaultFormInputWidth)
-    If (iWidth = "") Or (iWidth = "0") Then
-        iWidth = main.SiteProperty_DefaultFormInputWidth
+    'widthTextNoPx = KmaEncodeMissingText(Width, Main.SiteProperty_DefaultFormInputWidth)
+    If (widthTextNoPx = "") Or (widthTextNoPx = "0") Then
+        widthTextNoPx = main.SiteProperty_DefaultFormInputWidth
     End If
-    If IsNumeric(iWidth) Then
-        iWidth = iWidth & "px"
-    End If
+    widthTextNoPx = Replace(widthTextNoPx, "px", "", , , vbTextCompare)
+    'If IsNumeric(widthTextNoPx) Then
+    '    widthTextNoPx = widthTextNoPx & "px"
+    'End If
     If Height <> "" Then
-        iHeight = Height
+        heightTextNoPx = Height
     Else
-        iHeight = main.SiteProperty_DefaultFormInputHTMLHeight
+        heightTextNoPx = main.SiteProperty_DefaultFormInputHTMLHeight
     End If
-    'iHeight = KmaEncodeMissingText(Height, Main.SiteProperty_DefaultFormInputHTMLHeight)
-    If IsNumeric(iHeight) Then
-        iHeight = iHeight & "px"
-    End If
+    'heightTextNoPx = KmaEncodeMissingText(Height, Main.SiteProperty_DefaultFormInputHTMLHeight)
+    heightTextNoPx = Replace(heightTextNoPx, "px", "", , , vbTextCompare)
+    'If IsNumeric(heightTextNoPx) Then
+    '    heightTextNoPx = heightTextNoPx & "px"
+    'End If
     '
     EditorObjectName = "oEdit" & innovaCnt
     '
@@ -303,8 +305,8 @@ Friend Function getInnovaEditorAddon(main As Object, fieldname As String, styleL
         Call main.AddHeadScriptCode("var EditorCustomTag=" & addonListJSON, "wysiwyg editor")
     End If
     Raw = Replace(Raw, DefaultValueFPO, iDefaultValue)
-    Raw = Replace(Raw, WidthFPO, iWidth)
-    Raw = Replace(Raw, HeightFPO, iHeight)
+    Raw = Replace(Raw, WidthFPO, widthTextNoPx)
+    Raw = Replace(Raw, HeightFPO, heightTextNoPx)
     Raw = Replace(Raw, FieldNameFPO, fieldname)
     Raw = Replace(Raw, EditorNameFPO, EditorObjectName)
     '
@@ -318,7 +320,7 @@ Friend Function getInnovaEditorAddon(main As Object, fieldname As String, styleL
     '
 ErrorTrap:
     Set main = Nothing
-    Call HandleError("innovaEditorAddonClass", "getInnovaEditorAddon", Err.Number, Err.source, Err.Description, True, False)
+    Call HandleError("innovaEditorAddonClass", "getInnovaEditorAddon", Err.Number, Err.Source, Err.Description, True, False)
 End Function
 '
 '
@@ -339,7 +341,7 @@ Friend Function GetInnovaEditorStyleRules(main As Object, styleSheet As String) 
     Dim BS() As String
     Dim BPtr As Long
     Dim BCnt As Long
-    Dim cmd As String
+    Dim Cmd As String
     Dim BodyCmd As String
     'Dim LCaseStyleName As String
     Dim StyleCaption As String
@@ -360,7 +362,7 @@ Friend Function GetInnovaEditorStyleRules(main As Object, styleSheet As String) 
     Dim CutPosition As Long
     Dim iDefaultValue As String
     Dim EditorObjectName As String
-    Dim iWidth As String
+    Dim widthTextNoPx As String
     Dim iHeight As String
     Dim SourceMenu As String
     Dim EditorStyleRules As String
@@ -555,13 +557,13 @@ Dim Pos As Long
                 'BodyCmd = " padding:0px;"
                 BCnt = UBound(BS) + 1
                 For BPtr = 0 To BCnt - 1
-                    cmd = LCase(Trim(BS(BPtr)))
-                    If cmd = "" Then
-                    ElseIf InStr(1, cmd, "background", vbTextCompare) <> 0 Then
-                    ElseIf InStr(1, cmd, "padding", vbTextCompare) <> 0 Then
-                    ElseIf InStr(1, cmd, "margin", vbTextCompare) <> 0 Then
+                    Cmd = LCase(Trim(BS(BPtr)))
+                    If Cmd = "" Then
+                    ElseIf InStr(1, Cmd, "background", vbTextCompare) <> 0 Then
+                    ElseIf InStr(1, Cmd, "padding", vbTextCompare) <> 0 Then
+                    ElseIf InStr(1, Cmd, "margin", vbTextCompare) <> 0 Then
                     Else
-                        BodyCmd = BodyCmd & ";" & cmd
+                        BodyCmd = BodyCmd & ";" & Cmd
                     End If
                 Next
             End If
@@ -598,7 +600,7 @@ Dim Pos As Long
     '
 ErrorTrap:
     Set main = Nothing
-    Call HandleError("innovaEditorAddonClass", "getInnovaEditorStyleRules", Err.Number, Err.source, Err.Description, True, False)
+    Call HandleError("innovaEditorAddonClass", "getInnovaEditorStyleRules", Err.Number, Err.Source, Err.Description, True, False)
 End Function
 '
 '
@@ -681,7 +683,7 @@ Private Function GetInnovaEditorStyleRules_FilterStyles(styleSource As String, T
     ' ----- Error Trap
     '
 ErrorTrap:
-    Call HandleError("innovaEditorAddonClass", "getInnovaEditorStyleRules_FilterStyles", Err.Number, Err.source, Err.Description, True, False)
+    Call HandleError("innovaEditorAddonClass", "getInnovaEditorStyleRules_FilterStyles", Err.Number, Err.Source, Err.Description, True, False)
 End Function
 '
 '
@@ -697,7 +699,7 @@ Friend Function GetInnovaEditorCache(main As Object, AllowActiveContent As Boole
     '
     Exit Function
 ErrorTrap:
-    Call HandleError("InnovaEditorAddonClass", "GetInnovaEditorCache", Err.Number, Err.source, Err.Description, True, False)
+    Call HandleError("InnovaEditorAddonClass", "GetInnovaEditorCache", Err.Number, Err.Source, Err.Description, True, False)
 End Function
 '
 '
@@ -713,7 +715,7 @@ Friend Sub SetInnovaEditorCache(main As Object, Raw As String, AllowActiveConten
     '
     Exit Sub
 ErrorTrap:
-    Call HandleError("InnovaEditorAddonClass", "SetInnovaEditorCache", Err.Number, Err.source, Err.Description, True, False)
+    Call HandleError("InnovaEditorAddonClass", "SetInnovaEditorCache", Err.Number, Err.Source, Err.Description, True, False)
 End Sub
 '
 '===========================================================================
@@ -723,9 +725,9 @@ End Sub
 Private Sub HandleClassTrapError(MethodName As String, Optional Context As String)
     '
     If main Is Nothing Then
-        Call HandleError2("unknown", Context, App.EXEName, "PreviewClass", MethodName, Err.Number, Err.source, Err.Description, True, False, "unknown")
+        Call HandleError2("unknown", Context, App.EXEName, "PreviewClass", MethodName, Err.Number, Err.Source, Err.Description, True, False, "unknown")
     Else
-        Call HandleError2(main.ApplicationName, Context, App.EXEName, "PreviewClass", MethodName, Err.Number, Err.source, Err.Description, True, False, main.ServerLink)
+        Call HandleError2(main.ApplicationName, Context, App.EXEName, "PreviewClass", MethodName, Err.Number, Err.Source, Err.Description, True, False, main.ServerLink)
     End If
     '
 End Sub
