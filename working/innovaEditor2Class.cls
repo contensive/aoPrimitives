@@ -147,7 +147,8 @@ Friend Function getInnovaEditorAddon(main As Object, fieldname As String, styleL
     If Width <> "" Then
         widthTextNoPx = Width
     Else
-        widthTextNoPx = main.SiteProperty_DefaultFormInputWidth
+        'widthTextNoPx = main.SiteProperty_DefaultFormInputWidth
+        widthTextNoPx = "100%"
     End If
     'widthTextNoPx = KmaEncodeMissingText(Width, Main.SiteProperty_DefaultFormInputWidth)
     If (widthTextNoPx = "") Or (widthTextNoPx = "0") Then
