@@ -332,7 +332,7 @@ Public Function getTagStartPos(ignore As Variant, layout As String, layoutStartP
                 ' string found, verify it ends with either single-quote,double-quote,space,vbcr,vblf
                 '
                 c = Mid(s, Pos + Len(workingKey), 1)
-                If (InStr(1, "'"" " & vbCrLf, c) = 0) Then
+                If (InStr(1, ">'"" " & vbCrLf, c) = 0) Then
                     '
                     ' this is not a hit, find the next match
                     '
