@@ -232,12 +232,12 @@ End Function
 '
 Private Function tagMatch(layout As String, posStartTag As Long, searchId As String, searchClass As String) As Boolean
     Const attrAllowedChars = "abcdefghijklmnopqrstuvwzyz-_"
-    Dim tag As String
+    Dim Tag As String
     Dim tagLower As String
-    Dim pos As Long
+    Dim Pos As Long
     Dim idMatch As Boolean
     Dim classMatch As Boolean
-    Dim delimiter As String
+    Dim Delimiter As String
     Dim testChar As String
     Dim tagLength As Long
     Dim posValueStart As Long
@@ -247,18 +247,18 @@ Private Function tagMatch(layout As String, posStartTag As Long, searchId As Str
     Dim Ptr As Long
     '
     tagMatch = False
-    pos = InStr(posStartTag, layout, ">")
-    If pos > 0 Then
+    Pos = InStr(posStartTag, layout, ">")
+    If Pos > 0 Then
         tagMatch = True
-        tag = Mid(layout, posStartTag, pos - posStartTag + 1)
-        tagLower = LCase(tag)
-        tagLength = Len(tag)
+        Tag = Mid(layout, posStartTag, Pos - posStartTag + 1)
+        tagLower = LCase(Tag)
+        tagLength = Len(Tag)
         '
         ' check searchId
         '
         If tagMatch And (searchId <> "") Then
-            pos = InStr(1, tagLower, " id=", vbTextCompare)
-            If pos <= 0 Then
+            Pos = InStr(1, tagLower, " id=", vbTextCompare)
+            If Pos <= 0 Then
                 '
                 ' id required but this tag has no id attr
                 '
@@ -267,41 +267,41 @@ Private Function tagMatch(layout As String, posStartTag As Long, searchId As Str
                 '
                 ' test if the id attr value matches the searchClass
                 '
-                pos = pos + 4
-                delimiter = Mid(tagLower, pos, 1)
+                Pos = Pos + 4
+                Delimiter = Mid(tagLower, Pos, 1)
                 testValue = ""
-                If (delimiter = """") Or (delimiter = "'") Then
+                If (Delimiter = """") Or (Delimiter = "'") Then
                     '
                     ' search for end of delimited attribute value
                     '
-                    posValueStart = pos + 1
+                    posValueStart = Pos + 1
                     Do
-                        pos = pos + 1
-                        testChar = Mid(tagLower, pos, 1)
-                    Loop While (pos < tagLength) And (testChar <> delimiter)
-                    If pos >= tagLength Then
+                        Pos = Pos + 1
+                        testChar = Mid(tagLower, Pos, 1)
+                    Loop While (Pos < tagLength) And (testChar <> Delimiter)
+                    If Pos >= tagLength Then
                         '
                         ' delimiter not found, html error
                         '
                         tagMatch = False
                     Else
-                        testValue = Mid(tag, posValueStart, pos - posValueStart + 1)
+                        testValue = Mid(Tag, posValueStart, Pos - posValueStart)
                     End If
                 Else
                     '
                     ' search for end of non-delimited attribute value
                     '
-                    posValueStart = pos
-                    Do While (pos < tagLength) And (InStr(1, attrAllowedChars, Mid(tagLower, pos, 1), vbTextCompare))
-                        pos = pos + 1
+                    posValueStart = Pos
+                    Do While (Pos < tagLength) And (InStr(1, attrAllowedChars, Mid(tagLower, Pos, 1), vbTextCompare))
+                        Pos = Pos + 1
                     Loop
-                    If pos >= tagLength Then
+                    If Pos >= tagLength Then
                         '
                         ' delimiter not found, html error
                         '
                         tagMatch = False
                     Else
-                        testValue = Mid(tag, posValueStart, pos - posValueStart + 1)
+                        testValue = Mid(Tag, posValueStart, Pos - posValueStart)
                     End If
                 End If
                 If tagMatch And (testValue <> "") Then
@@ -321,8 +321,8 @@ Private Function tagMatch(layout As String, posStartTag As Long, searchId As Str
         ' check searchClass
         '
         If tagMatch And (searchClass <> "") Then
-            pos = InStr(1, tagLower, " class=", vbTextCompare)
-            If pos <= 0 Then
+            Pos = InStr(1, tagLower, " class=", vbTextCompare)
+            If Pos <= 0 Then
                 '
                 ' class required but this tag has no class attr
                 '
@@ -331,41 +331,41 @@ Private Function tagMatch(layout As String, posStartTag As Long, searchId As Str
                 '
                 ' test if the class attr value matches the searchClass
                 '
-                pos = pos + 7
-                delimiter = Mid(tagLower, pos, 1)
+                Pos = Pos + 7
+                Delimiter = Mid(tagLower, Pos, 1)
                 testValue = ""
-                If (delimiter = """") Or (delimiter = "'") Then
+                If (Delimiter = """") Or (Delimiter = "'") Then
                     '
                     ' search for end of delimited attribute value
                     '
-                    posValueStart = pos + 1
+                    posValueStart = Pos + 1
                     Do
-                        pos = pos + 1
-                        testChar = Mid(tagLower, pos, 1)
-                    Loop While (pos < tagLength) And (testChar <> delimiter)
-                    If pos >= tagLength Then
+                        Pos = Pos + 1
+                        testChar = Mid(tagLower, Pos, 1)
+                    Loop While (Pos < tagLength) And (testChar <> Delimiter)
+                    If Pos >= tagLength Then
                         '
                         ' delimiter not found, html error
                         '
                         tagMatch = False
                     Else
-                        testValue = Mid(tag, posValueStart, pos - posValueStart)
+                        testValue = Mid(Tag, posValueStart, Pos - posValueStart)
                     End If
                 Else
                     '
                     ' search for end of non-delimited attribute value
                     '
-                    posValueStart = pos
-                    Do While (pos < tagLength) And (InStr(1, attrAllowedChars, Mid(tagLower, pos, 1), vbTextCompare))
-                        pos = pos + 1
+                    posValueStart = Pos
+                    Do While (Pos < tagLength) And (InStr(1, attrAllowedChars, Mid(tagLower, Pos, 1), vbTextCompare))
+                        Pos = Pos + 1
                     Loop
-                    If pos >= tagLength Then
+                    If Pos >= tagLength Then
                         '
                         ' delimiter not found, html error
                         '
                         tagMatch = False
                     Else
-                        testValue = Mid(tag, posValueStart, pos - posValueStart)
+                        testValue = Mid(Tag, posValueStart, Pos - posValueStart)
                     End If
                 End If
                 If tagMatch And (testValue <> "") Then
@@ -399,7 +399,7 @@ Public Function getTagStartPos2(ignore As Variant, layout As String, layoutStart
     '
     'Dim posMatch As Long
     Dim SegmentStart As Long
-    Dim pos As Long
+    Dim Pos As Long
     'Dim searchIsOver As Boolean
     Dim LoopPtr As Long
     Dim searchKey As String
@@ -474,10 +474,10 @@ Public Function getTagStartPos2(ignore As Variant, layout As String, layoutStart
             searchClass = Mid(workingKey, 2)
             searchTag = ""
             searchId = ""
-            pos = InStr(1, searchClass, "#")
-            If pos <> 0 Then
-                searchId = Mid(searchClass, pos)
-                searchClass = Mid(searchClass, 1, pos - 1)
+            Pos = InStr(1, searchClass, "#")
+            If Pos <> 0 Then
+                searchId = Mid(searchClass, Pos)
+                searchClass = Mid(searchClass, 1, Pos - 1)
             End If
             '
             'workingKey = Mid(workingKey, 2)
@@ -489,54 +489,53 @@ Public Function getTagStartPos2(ignore As Variant, layout As String, layoutStart
             searchClass = ""
             searchTag = ""
             searchId = Mid(workingKey, 2)
-            pos = InStr(1, searchId, ".")
-            If pos <> 0 Then
-                searchClass = Mid(searchId, pos)
-                searchId = Mid(searchId, 1, pos - 1)
+            Pos = InStr(1, searchId, ".")
+            If Pos <> 0 Then
+                searchClass = Mid(searchId, Pos)
+                searchId = Mid(searchId, 1, Pos - 1)
             End If
             '
             'workingKey = Mid(workingKey, 2)
             searchKey = "<"
         Else
             '
-            '   !!!!! might be a compound selector - can not just assume it is a tag
             ' search for a tagname
             '
             searchClass = ""
             searchTag = workingKey
             searchId = ""
             '
-            pos = InStr(1, searchTag, "#")
-            If pos <> 0 Then
-                searchId = Mid(searchTag, pos + 1)
-                searchTag = Mid(searchTag, 1, pos - 1)
-                pos = InStr(1, searchId, ".")
-                If pos <> 0 Then
-                    searchClass = Mid(searchId, pos)
-                    searchId = Mid(searchId, 1, pos - 1)
+            Pos = InStr(1, searchTag, "#")
+            If Pos <> 0 Then
+                searchId = Mid(searchTag, Pos + 1)
+                searchTag = Mid(searchTag, 1, Pos - 1)
+                Pos = InStr(1, searchId, ".")
+                If Pos <> 0 Then
+                    searchClass = Mid(searchId, Pos)
+                    searchId = Mid(searchId, 1, Pos - 1)
                 End If
             End If
-            pos = InStr(1, searchTag, ".")
-            If pos <> 0 Then
-                searchClass = Mid(searchTag, pos + 1)
-                searchTag = Mid(searchTag, 1, pos - 1)
-                pos = InStr(1, searchClass, "#")
-                If pos <> 0 Then
-                    searchId = Mid(searchClass, pos)
-                    searchClass = Mid(searchClass, 1, pos - 1)
+            Pos = InStr(1, searchTag, ".")
+            If Pos <> 0 Then
+                searchClass = Mid(searchTag, Pos + 1)
+                searchTag = Mid(searchTag, 1, Pos - 1)
+                Pos = InStr(1, searchClass, "#")
+                If Pos <> 0 Then
+                    searchId = Mid(searchClass, Pos)
+                    searchClass = Mid(searchClass, 1, Pos - 1)
                 End If
             End If
             '
             searchKey = "<" & searchTag
         End If
         lenSearchKey = Len(searchKey)
-        pos = layoutStartPos
+        Pos = layoutStartPos
         'posMatch = InStr(layoutStartPos, layout, searchKey)
         'pos = posMatch
         'searchIsOver = False
         Do
-            pos = InStr(pos, layout, searchKey)
-            If pos = 0 Then
+            Pos = InStr(Pos, layout, searchKey)
+            If Pos = 0 Then
                 '
                 ' not found, return empty
                 '
@@ -546,93 +545,46 @@ Public Function getTagStartPos2(ignore As Variant, layout As String, layoutStart
                 '
                 ' string found - go to the start of the tag
                 '
-                posStartTag = InStrRev(layout, "<", pos + 1)
+                posStartTag = InStrRev(layout, "<", Pos + 1)
                 If posStartTag <= 0 Then
                     '
                     ' bad html, no start tag found
                     '
-                    pos = 0
+                    Pos = 0
                     returnPos = 0
+                ElseIf Mid(layout, posStartTag, 2) = "</" Then
+                    '
+                    ' this is an end tag, skip it
+                    '
+                    Pos = Pos + 1
                 ElseIf tagMatch(layout, posStartTag, searchId, searchClass) Then
                     '
                     ' match, return with this position
                     '
-                    returnPos = pos
+                    returnPos = Pos
                     Exit Do
                 Else
                     '
                     ' no match, skip this and go to the next
                     '
-                    pos = pos + 1
+                    Pos = Pos + 1
                 End If
-'
-'
-'
-'
-'                '
-'                ' string found, verify it ends with either single-quote,double-quote,space,vbcr,vblf, or GT
-'                '
-'                c = Mid(layout, Pos + lenSearchKey, 1)
-'                If (InStr(1, ">'"" " & vbCrLf, c) = 0) Then
-'                    '
-'                    ' this is not a hit, find the next match
-'                    '
-'                    posMatch = InStr(posMatch + 1, layout, searchKey)
-'                    Pos = posMatch
-'                Else
-'                    '
-'                    ' string found, go back to start of string
-'                    '
-'                    c = LCase(Mid(layout, Pos - 1, 1))
-'                    If (c >= "a") And (c <= "z") Then
-'                        '
-'                        ' this is not a hit, find the next match
-'                        '
-'                        posMatch = InStr(posMatch + 1, layout, searchKey)
-'                        Pos = posMatch
-'                    Else
-'                        If (c = """") Or (c = "'") Then
-'                            '
-'                            ' hit a quote, go back one more
-'                            '
-'                            Pos = Pos - 1
-'                        End If
-'                        '
-'                        ' this should be a match, no not
-'                        '
-'                        If searchKey = Mid(layout, Pos - lenSearchKey, lenSearchKey) Then
-'                            '
-'                            ' match found, get from front of tag to the end of this tag
-'                            '
-'                            Pos = InStrRev(layout, "<", Pos)
-'                            If Pos = 0 Then
-''s = ""
-'                            Else
-'                                returnPos = Pos
-'                                's = Mid(s, pos)
-'                                'PosEnd = getTagEndPos(ignore, s, 1)
-'                                's = Left(s, PosEnd)
-'                            End If
-'                            Exit Do
-'                        Else
-'                            '
-'                            ' not a match, go find the next (posMatch is where the string was last found)
-'                            '
-'                            posMatch = InStr(posMatch + 1, layout, searchKey)
-'                            Pos = posMatch
-'                        End If
-'                    End If
-'                End If
             End If
             LoopPtr = LoopPtr + 1
-        Loop While LoopPtr < 100
+        Loop While LoopPtr < 1000
+        '
+        '
+        '
+        If LoopPtr >= 1000 Then
+            Call Err.Raise(KmaErrorInternal, "aoPrimitives.htmlToolsClass.getTagStartPos2", "Tag limit of 1000 tags per block reached.")
+        End If
     End If
     '
     getTagStartPos2 = returnPos
     '
     Exit Function
 ErrorTrap:
-    Call Err.Raise(KmaErrorInternal, "aoPrimitives.htmlToolsClass.getTagEndPos", "Unexpected Error [" & Err.Description & "]")
+    Call Err.Raise(KmaErrorInternal, "aoPrimitives.htmlToolsClass.getTagStartPos2", "Unexpected Error [" & Err.Description & "]")
 End Function
 '
 '
@@ -646,7 +598,7 @@ Exit Function
     '
     Dim posMatch As Long
     Dim SegmentStart As Long
-    Dim pos As Long
+    Dim Pos As Long
     Dim searchIsOver As Boolean
     Dim LoopPtr As Long
     Dim targetName As String
@@ -737,10 +689,10 @@ Exit Function
         lenTargetName = Len(targetName)
 '!!!!! ul.menu_desktop selector fails here. Pos returned 0.
         posMatch = InStr(layoutStartPos, s, workingKey)
-        pos = posMatch
+        Pos = posMatch
         searchIsOver = False
         Do
-            If pos = 0 Then
+            If Pos = 0 Then
                 '
                 ' not found, return empty
                 '
@@ -750,43 +702,43 @@ Exit Function
                 '
                 ' string found, verify it ends with either single-quote,double-quote,space,vbcr,vblf, or GT
                 '
-                c = Mid(s, pos + Len(workingKey), 1)
+                c = Mid(s, Pos + Len(workingKey), 1)
                 If (InStr(1, ">'"" " & vbCrLf, c) = 0) Then
                     '
                     ' this is not a hit, find the next match
                     '
                     posMatch = InStr(posMatch + 1, s, workingKey)
-                    pos = posMatch
+                    Pos = posMatch
                 Else
                     '
                     ' string found, go back to start of string
                     '
-                    c = LCase(Mid(s, pos - 1, 1))
+                    c = LCase(Mid(s, Pos - 1, 1))
                     If (c >= "a") And (c <= "z") Then
                         '
                         ' this is not a hit, find the next match
                         '
                         posMatch = InStr(posMatch + 1, s, workingKey)
-                        pos = posMatch
+                        Pos = posMatch
                     Else
                         If (c = """") Or (c = "'") Then
                             '
                             ' hit a quote, go back one more
                             '
-                            pos = pos - 1
+                            Pos = Pos - 1
                         End If
                         '
                         ' this should be a match, no not
                         '
-                        If targetName = Mid(s, pos - lenTargetName, lenTargetName) Then
+                        If targetName = Mid(s, Pos - lenTargetName, lenTargetName) Then
                             '
                             ' match found, get from front of tag to the end of this tag
                             '
-                            pos = InStrRev(s, "<", pos)
-                            If pos = 0 Then
+                            Pos = InStrRev(s, "<", Pos)
+                            If Pos = 0 Then
                                 s = ""
                             Else
-                                getTagStartPos = pos
+                                getTagStartPos = Pos
                                 's = Mid(s, pos)
                                 'PosEnd = getTagEndPos(ignore, s, 1)
                                 's = Left(s, PosEnd)
@@ -797,7 +749,7 @@ Exit Function
                             ' not a match, go find the next (posMatch is where the string was last found)
                             '
                             posMatch = InStr(posMatch + 1, s, workingKey)
-                            pos = posMatch
+                            Pos = posMatch
                         End If
                     End If
                 End If
@@ -824,7 +776,7 @@ Public Function getTagEndPos(ignore As Variant, Source, startPos) As Long
     On Error GoTo ErrorTrap
     '
     '
-    Dim pos As Long
+    Dim Pos As Long
     Dim TagName As String
     Dim endTag As String
     Dim startTag As String
@@ -833,43 +785,43 @@ Public Function getTagEndPos(ignore As Variant, Source, startPos) As Long
     Dim posComment As Long
     Dim c As String
     '
-    pos = InStr(startPos, Source, "<")
+    Pos = InStr(startPos, Source, "<")
     TagName = ""
     getTagEndPos = 0
-    If pos <> 0 Then
-        pos = pos + 1
-        Do While pos < Len(Source)
-            c = LCase(Mid(Source, pos, 1))
+    If Pos <> 0 Then
+        Pos = Pos + 1
+        Do While Pos < Len(Source)
+            c = LCase(Mid(Source, Pos, 1))
             If (c >= "a") And (c <= "z") Then
                 TagName = TagName & c
             Else
                 Exit Do
             End If
-            pos = pos + 1
+            Pos = Pos + 1
         Loop
         If TagName <> "" Then
             endTag = "</" & TagName
             startTag = "<" & TagName
-            Do While (pos <> 0)
-                posEnd = InStr(pos + 1, Source, endTag, vbTextCompare)
+            Do While (Pos <> 0)
+                posEnd = InStr(Pos + 1, Source, endTag, vbTextCompare)
                 If posEnd = 0 Then
                     '
                     ' no end was found, return the tag or rest of the string
                     '
-                    getTagEndPos = InStr(pos + 1, Source, ">") + 1
+                    getTagEndPos = InStr(Pos + 1, Source, ">") + 1
                     If posEnd = 1 Then
                         getTagEndPos = Len(Source)
                     End If
                     Exit Do
                 Else
-                    posNest = InStr(pos + 1, Source, startTag, vbTextCompare)
+                    posNest = InStr(Pos + 1, Source, startTag, vbTextCompare)
                     If posNest = 0 Then
                         '
                         ' no nest found, set to end
                         '
                         posNest = Len(Source)
                     End If
-                    posComment = InStr(pos + 1, Source, "<!--")
+                    posComment = InStr(Pos + 1, Source, "<!--")
                     If posComment = 0 Then
                         '
                         ' no comment found, set to end
@@ -880,20 +832,20 @@ Public Function getTagEndPos(ignore As Variant, Source, startPos) As Long
                         '
                         ' ----- the tag is nested, find the end of the nest
                         '
-                        pos = getTagEndPos(ignore, Source, posNest)
+                        Pos = getTagEndPos(ignore, Source, posNest)
                         ' 8/28/2012, if there is a nested tag right before the correct end tag, it skips the end:
                         ' <div class=a>a<div class=b>b</div></div>
                         ' the second /div is missed because getTagEndPos returns one past the >, then the
                         ' next search starts +1 that position
-                        If (pos > 0) Then
-                            pos = pos - 1
+                        If (Pos > 0) Then
+                            Pos = Pos - 1
                         End If
                     ElseIf (posComment < posEnd) Then
                         '
                         ' ----- there is a comment between the tag and the first tagend, skip it
                         '
-                        pos = InStr(posComment, Source, "-->")
-                        If pos = 0 Then
+                        Pos = InStr(posComment, Source, "-->")
+                        If Pos = 0 Then
                             '
                             ' start comment with no end, exit now
                             '
@@ -904,8 +856,8 @@ Public Function getTagEndPos(ignore As Variant, Source, startPos) As Long
                         '
                         ' ----- end position is here, go to the end of it and exit
                         '
-                        pos = InStr(posEnd, Source, ">")
-                        If pos = 0 Then
+                        Pos = InStr(posEnd, Source, ">")
+                        If Pos = 0 Then
                             '
                             ' no end was found, just exit
                             '
@@ -915,7 +867,7 @@ Public Function getTagEndPos(ignore As Variant, Source, startPos) As Long
                             '
                             ' ----- end was found
                             '
-                            getTagEndPos = pos + 1
+                            getTagEndPos = Pos + 1
                             Exit Do
                         End If
                     End If
