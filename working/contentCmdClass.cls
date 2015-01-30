@@ -192,7 +192,7 @@ Private Function ExecuteAllCmdLists(csv As Object, mainOrNothing As Object, src 
     Dim posArgClose As Long
     Dim posOpen As Long
     Dim posClose As Long
-    Dim cmd As String
+    Dim Cmd As String
     Dim cmdArgs As String
     Dim cmdResult As String
     '
@@ -218,7 +218,7 @@ Private Function ExecuteAllCmdLists(csv As Object, mainOrNothing As Object, src 
     dst = ""
     ptrLast = 1
     Do
-        cmd = ""
+        Cmd = ""
         posOpen = InStr(ptrLast, src, contentReplaceEscapeStart)
         Ptr = posOpen
         If Ptr = 0 Then
@@ -316,13 +316,13 @@ Private Function ExecuteAllCmdLists(csv As Object, mainOrNothing As Object, src 
             '
             ' cmd found, process it and add the results to the dst
             '
-            cmd = Mid(src, posOpen + 2, (posClose - posOpen - 2))
-            cmdResult = ExecuteAllCmdLists_Execute(csv, mainOrNothing, cmd, badCmd, Context, personalizationPeopleId, personalizationIsAuthenticated, dataVersion)
+            Cmd = Mid(src, posOpen + 2, (posClose - posOpen - 2))
+            cmdResult = ExecuteAllCmdLists_Execute(csv, mainOrNothing, Cmd, badCmd, Context, personalizationPeopleId, personalizationIsAuthenticated, dataVersion)
             If badCmd Then
                 '
                 ' the command was bad, put it back in place (?) in case it was not a command
                 '
-                cmdResult = contentReplaceEscapeStart & cmd & contentReplaceEscapeEnd
+                cmdResult = contentReplaceEscapeStart & Cmd & contentReplaceEscapeEnd
             End If
             dst = dst & Mid(src, ptrLast, posOpen - ptrLast) & cmdResult
             Ptr = posClose + 2
@@ -363,7 +363,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
     Dim ArgOptionString As String
     Dim ArgOptionStringHTMLEncoded As String
     '
-    Dim cmd As String
+    Dim Cmd As String
     Dim cmdArg As String
     Dim Pos As Long
     Dim AddonOptionString As String
@@ -458,7 +458,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                 ' convert dictionary of objects to a collection of objects
                 '
                 Dim dictionaryKeys() As Variant
-                Dim key As Variant
+                Dim Key As Variant
                 Dim itemObject As Object
                 Dim itemVariant As Variant
                 '
@@ -466,16 +466,16 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                 Dim cmdObject As Dictionary
                 '
                 dictionaryKeys = cmdDictionaryOrCollection.Keys
-                For Each key In dictionaryKeys
-                    If IsObject(cmdDictionaryOrCollection.Item(key)) Then
+                For Each Key In dictionaryKeys
+                    If IsObject(cmdDictionaryOrCollection.Item(Key)) Then
                         Set cmdObject = New Dictionary
-                        Set itemObject = cmdDictionaryOrCollection.Item(key)
-                        Call cmdObject.Add(key, itemObject)
+                        Set itemObject = cmdDictionaryOrCollection.Item(Key)
+                        Call cmdObject.Add(Key, itemObject)
                         Call cmdCollection.Add(cmdObject)
                     Else
                         Set cmdObject = New Dictionary
-                        itemVariant = cmdDictionaryOrCollection.Item(key)
-                        Call cmdObject.Add(key, itemVariant)
+                        itemVariant = cmdDictionaryOrCollection.Item(Key)
+                        Call cmdObject.Add(Key, itemVariant)
                         Call cmdCollection.Add(cmdObject)
                     End If
                 Next
@@ -517,35 +517,35 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
             '   "content box"
             '   all other posibilities are syntax errors
             '
-            cmd = Trim(cmdSrc)
+            Cmd = Trim(cmdSrc)
             cmdArg = ""
-            If Mid(cmd, 1, 1) = """" Then
+            If Mid(Cmd, 1, 1) = """" Then
                 '
                 'cmd is quoted
                 '   "open"
                 '   "Open" file
                 '   "Open" "file"
                 '
-                Pos = InStr(2, cmd, """")
+                Pos = InStr(2, Cmd, """")
                 If Pos <= 1 Then
                     Call HandleClassErrorAndResume(csv, "ExecuteAllCmdLists_Execute", "Error parsing content command [" & cmdSrc & "], expected a close quote around position " & Pos)
                     Exit Function
                 Else
-                    If Pos = Len(cmd) Then
+                    If Pos = Len(Cmd) Then
                         '
                         ' cmd like "open"
                         '
                         cmdArg = ""
-                        cmd = Mid(cmd, 2, Pos - 2)
-                    ElseIf Mid(cmd, Pos + 1, 1) <> " " Then
+                        Cmd = Mid(Cmd, 2, Pos - 2)
+                    ElseIf Mid(Cmd, Pos + 1, 1) <> " " Then
                         '
                         ' syntax error, must be a space between cmd and argument
                         '
                         Call HandleClassErrorAndResume(csv, "ExecuteAllCmdLists_Execute", "Error parsing content command [" & cmdSrc & "], expected a space between command and argument around position " & Pos)
                         Exit Function
                     Else
-                        cmdArg = Trim(Mid(cmd, Pos + 1))
-                        cmd = Mid(cmd, 2, Pos - 2)
+                        cmdArg = Trim(Mid(Cmd, Pos + 1))
+                        Cmd = Mid(Cmd, 2, Pos - 2)
                     End If
                 End If
                 
@@ -555,10 +555,10 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                 '   open
                 '   open file
                 '
-                Pos = InStr(1, cmd, " ")
+                Pos = InStr(1, Cmd, " ")
                 If Pos > 0 Then
                     cmdArg = Mid(cmdSrc, Pos + 1)
-                    cmd = Trim(Mid(cmdSrc, 1, Pos - 1))
+                    Cmd = Trim(Mid(cmdSrc, 1, Pos - 1))
                 End If
             End If
             If Mid(cmdArg, 1, 1) = """" Then
@@ -595,7 +595,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                     Call cmdCollection.Add(cmdDictionaryOrCollection)
                 End If
                 Set cmdDef = New Dictionary
-                Call cmdDef.Add(cmd, cmdDictionaryOrCollection)
+                Call cmdDef.Add(Cmd, cmdDictionaryOrCollection)
                 Set cmdCollection = New Collection
                 Call cmdCollection.Add(cmdDef)
             Else
@@ -603,7 +603,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                 ' command and arguments are strings
                 '
                 Set cmdDef = New Dictionary
-                Call cmdDef.Add(cmd, cmdArg)
+                Call cmdDef.Add(Cmd, cmdArg)
                 Set cmdCollection = New Collection
                 Call cmdCollection.Add(cmdDef)
             End If
@@ -628,7 +628,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                 '
                 ' case A & B, the cmdDef is a string
                 '
-                cmd = cmdStringOrDictionary
+                Cmd = cmdStringOrDictionary
                 Set cmdArgDef = New Dictionary
             ElseIf LCase(TypeName(cmdStringOrDictionary)) = "dictionary" Then
                 '
@@ -640,15 +640,15 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                     ' syntax error
                     '
                 Else
-                    cmd = cmdDef.Keys(0)
-                    If LCase(TypeName(cmdDef.Item(cmd))) = "string" Then
+                    Cmd = cmdDef.Keys(0)
+                    If LCase(TypeName(cmdDef.Item(Cmd))) = "string" Then
                         '
                         ' command definition with default argument
                         '
                         Set cmdArgDef = New Dictionary
-                        Call cmdArgDef.Add("default", cmdDef.Item(cmd))
-                    ElseIf LCase(TypeName(cmdDef.Item(cmd))) = "dictionary" Then
-                        Set cmdArgDef = cmdDef.Item(cmd)
+                        Call cmdArgDef.Add("default", cmdDef.Item(Cmd))
+                    ElseIf LCase(TypeName(cmdDef.Item(Cmd))) = "dictionary" Then
+                        Set cmdArgDef = cmdDef.Item(Cmd)
                     Else
                         '
                         ' syntax error, bad command
@@ -669,7 +669,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
             '
             ' execute the cmd with cmdArgDef dictionary
             '
-            Select Case LCase(cmd)
+            Select Case LCase(Cmd)
                 Case "textbox"
                     '
                     ' Opens a textbox addon (patch for text box name being "text name" so it requies json)copy content record
@@ -963,7 +963,7 @@ Private Function ExecuteAllCmdLists_Execute(csv As Object, mainOrNothing As Obje
                         On Error Resume Next
                         CmdAccumulator = htmlTools.getOuterHTML(Nothing, CmdAccumulator, argFind)
                     End If
-                Case "addon"
+                Case "runaddon", "executeaddon", "addon"
                     '
                     ' execute an add-on
                     '
@@ -991,7 +991,7 @@ Dim addonStatusOK As Boolean
                     '
                     ' attempts to execute an add-on with the command name
                     '
-                    addonName = cmd
+                    addonName = Cmd
                     ArgInstanceId = ""
                     ArgGuid = ""
                     For Ptr = 0 To cmdArgDef.Count - 1
